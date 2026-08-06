@@ -81,18 +81,21 @@ const openErrorModal = (log) => {
           <form @submit.prevent="submitImport" class="space-y-6">
             <!-- Dropzone Area -->
             <div class="relative group">
+              <!-- FIX: z-[100] memastikan input selalu di layer paling atas -->
               <input
                 type="file"
                 id="excel-file"
                 accept=".xlsx, .xls, .csv"
                 @change="handleFileChange"
-                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-[100]"
                 required
               />
-              <div class="border-2 border-dashed border-ledger-line/70 rounded-lg p-10 text-center bg-paper group-hover:bg-ink-navy/[0.03] transition-colors flex flex-col items-center justify-center min-h-[200px] relative overflow-hidden">
+              
+              <!-- FIX: Tambahan pointer-events-none agar visual di bawah tidak memblokir klik kursor ke input -->
+              <div class="border-2 border-dashed border-ledger-line/70 rounded-lg p-10 text-center bg-paper group-hover:bg-ink-navy/[0.03] transition-colors flex flex-col items-center justify-center min-h-[200px] relative overflow-hidden pointer-events-none">
                 
                 <!-- Aksen Garis Blueprint -->
-                <div class="absolute inset-0 opacity-[0.02] pointer-events-none bg-[linear-gradient(to_right,#1f3a52_1px,transparent_1px),linear-gradient(to_bottom,#1f3a52_1px,transparent_1px)] bg-[size:20px_20px]" aria-hidden="true"></div>
+                <div class="absolute inset-0 opacity-[0.02] bg-[linear-gradient(to_right,#1f3a52_1px,transparent_1px),linear-gradient(to_bottom,#1f3a52_1px,transparent_1px)] bg-[size:20px_20px]" aria-hidden="true"></div>
 
                 <div v-if="!form.file" class="space-y-3 relative z-10">
                   <div class="w-16 h-16 mx-auto bg-paper-card border-2 border-ledger-line shadow-sm flex items-center justify-center rotate-[-5deg] group-hover:rotate-0 transition-transform duration-300">
@@ -165,7 +168,7 @@ const openErrorModal = (log) => {
             </div>
             <div class="flex flex-col border-b border-dashed border-amber-900/10 pb-2">
               <span class="font-bold text-amber-950 bg-amber-100 px-1 py-0.5 rounded w-fit mb-1">kelas</span>
-              <span class="text-amber-900/70">Contoh: XII - A</span>
+              <span class="text-amber-900/70">Contoh: 10 IPA 1</span>
             </div>
             <div class="flex flex-col">
               <span class="font-bold text-amber-950 bg-amber-100 px-1 py-0.5 rounded w-fit mb-1">drive_link</span>
@@ -256,7 +259,7 @@ const openErrorModal = (log) => {
           
           <!-- Isolasi & Stempel Peringatan -->
           <div class="absolute -top-4 left-1/2 -translate-x-1/2 w-20 h-6 bg-amber-200/60 border border-amber-300/60 rotate-[2deg] backdrop-blur-[1px]" aria-hidden="true"></div>
-          <div class="absolute top-6 right-6 border-2 border-stamp-red text-stamp-red font-mono font-black uppercase text-[10px] tracking-widest px-2 py-1 rotate-[15deg] opacity-80">
+          <div class="absolute top-6 right-6 border-2 border-stamp-red text-stamp-red font-mono font-black uppercase text-[10px] tracking-widest px-2 py-1 rotate-[15deg] opacity-80 pointer-events-none">
             AUDIT GAGAL
           </div>
 
@@ -273,11 +276,11 @@ const openErrorModal = (log) => {
           <div class="bg-paper p-4 rounded-md border-2 border-stamp-red/50 relative shadow-inner">
             <div class="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(153,27,27,0.03)_50%)] bg-[length:100%_4px] pointer-events-none"></div>
             
-            <p class="text-[10px] font-mono font-bold text-stamp-red mb-3 uppercase tracking-widest">
+            <p class="text-[10px] font-mono font-bold text-stamp-red mb-3 uppercase tracking-widest relative z-10">
               Detail Baris Bermasalah:
             </p>
 
-            <div class="max-h-[40vh] overflow-y-auto space-y-1.5 pr-2 custom-scrollbar">
+            <div class="max-h-[40vh] overflow-y-auto space-y-1.5 pr-2 custom-scrollbar relative z-10">
               <div
                 v-for="(err, idx) in selectedErrorLog.error_details"
                 :key="idx"
